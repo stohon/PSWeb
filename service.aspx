@@ -1,0 +1,1 @@
+<%@ Page Language="C#" CodeFile="service.aspx.cs" Inherits="PowerShellWebConsole.Service_aspx" %>

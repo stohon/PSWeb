@@ -1,0 +1,23 @@
+@keyframes blinker { 50% { opacity: 0; } }
+.htext { font-family: Verdana; font-size: 12px; }
+#btnExe { color:black; cursor:pointer; border:1px solid #aaaaff; padding:2px;
+          background: linear-gradient(#eeeeff, #9999ff); font-weight:normal; }
+.innerRun { padding-left:10px; padding-right:10px; }
+.playButton { font-family:webdings;font-size:16px; padding-right:3px; }
+.lblExe { color:red; animation: blinker .75s linear infinite; }
+.p6 { padding:6px; } .p8 { padding:8px; } .pr15 { padding-right:15px; }
+.lf { float:left; } .rf { float:right; }
+body { background-color:#bbbbff; }
+.toolbar { height:30px; background: linear-gradient(#eeeeff, #bbbbff); width:100%; }
+.display { width:100%; border-bottom:1px solid #bbbbff; }
+body { margin:0px;overflow:hidden; }
+pre { margin:0px;overflow:auto;width:100%;background-color: white;}
+.sel200 { width: 200px; }
+.sel300 { width: 300px; }
+#script { text-align:left; overflow:auto;width:98%;margin:0px;padding:1%;background-color:white; }
+#results { background-color:darkblue;color:white;padding:10px;overflow:auto; }
+.param { background-color:#ffffaa; padding:3px; border: 1px solid #dddd77; 
+         padding-right:5px; padding-left:5px; }
+.paramLine { padding:4px;margin-left:15px; }
+.errorRow { padding:5px; color:red; }
+.dataRow { padding:5px; }

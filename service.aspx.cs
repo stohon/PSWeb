@@ -22,6 +22,7 @@ namespace PowerShellWebConsole
 
     public partial class Service_aspx : System.Web.UI.Page
     {
+        // Gets the root path of where the scripts are located
         public string PowerShellRootFolder { get { return Server.MapPath("~") + @"\powershell\"; }}
 
         protected void Page_Load(object sender, EventArgs e) {

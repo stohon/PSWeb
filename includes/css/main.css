@@ -19,6 +19,7 @@ pre { margin:0px;overflow:auto;width:100%;background-color: white;}
 .resultsWhite { background-color:#202020;color:#dddddd;padding:10px;overflow:auto; font-family:verdana; font-size:12px; }
 .jsonPretty { background-color:#202020;}
 .psPretty { background-color:darkblue;color:white; padding:10px; width:98%; }
+.htmlPretty { background-color:white;color:black; padding:10px; width:98%; }
 .param { background-color:#ffffaa; padding:3px; border: 1px solid #dddd77; 
          padding-right:5px; padding-left:5px; }
 .paramLine { padding:4px;margin-left:15px; }

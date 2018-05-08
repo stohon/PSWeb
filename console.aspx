@@ -55,7 +55,7 @@
                 </div>
                 <div v-for="(d, i) in psresults.DataObjects" class="dataRow">
                     <div style="padding-bottom:4px;"><span style='color:yellow;'>variable:</span> <b>{{d.Name}}</b></div>
-                    <pre class="psPretty" v-html="d.OutString"></pre>
+                    <pre class="htmlPretty" v-html="d.OutString"></pre>
                 </div>
             </div>
             <div id="jsonResults" v-if="viewIndex == 2"><pre class="jsonPretty">{{psresults}}</pre></div>

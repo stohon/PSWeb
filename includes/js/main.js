@@ -29,6 +29,7 @@ var page = {
                     this.loadScript(); 
                 },
                 setDefaultView() {
+                    this.viewIndex = 0;
                     if (this._curFileName.indexOf(".html.") > 0) { this.viewIndex = 1 }
                     if (this._curFileName.indexOf(".json.") > 0) { this.viewIndex = 2 }
                     if (this._curFileName.indexOf(".rest.") > 0) { this.viewIndex = 3 }

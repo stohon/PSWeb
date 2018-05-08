@@ -15,7 +15,7 @@ namespace PowerShellWebConsole
 {
     // RESPONSE TYPES
     public class OutError           { public string Category; public string Message; }
-    public class OutDataObject      { public string Name; public dynamic Data; }
+    public class OutDataObject      { public string Name; public dynamic Data; public string OutString; }
 	public class OutDataProperties  { public string Name; public string Value; public string ValueType; }
 	public class OutResponse        { public List<OutError> Errors = new List<OutError>(); public List<OutDataObject> DataObjects = new List<OutDataObject>(); }
     public class File_OutResponse   { public string Source; }
@@ -102,7 +102,8 @@ namespace PowerShellWebConsole
                             if (outputItem != null && outputItem.ToString() == "OutputToWeb") {
                                 outResp.DataObjects.Add(new OutDataObject() {
                                     Name = outputItem.Properties["Name"].Value.ToString(),
-                                    Data = JValue.Parse (outputItem.Properties["Value"] == null ? "" : outputItem.Properties["Value"].Value.ToString())
+                                    Data = JValue.Parse (outputItem.Properties["Value"] == null ? "" : outputItem.Properties["Value"].Value.ToString()),
+                                    OutString = outputItem.Properties["OutString"].Value.ToString()
                                 });
                             }
                         }

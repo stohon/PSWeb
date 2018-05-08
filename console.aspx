@@ -45,8 +45,8 @@
                     {{e.Category}}<br/>{{e.Message}}
                 </div>
                 <div v-for="(d, i) in psresults.DataObjects" class="dataRow">
-                    <span style='color:yellow;'>var: </span>{{d.Name}}<br/>
-                    {{ d.Data }}
+                    <div style="padding-bottom:4px;"><span style='color:yellow;'>variable:</span> <b>{{d.Name}}</b></div>
+                    <pre class="psPretty">{{ d.OutString }}</pre>
                 </div>
             </div>
             <div id="jsonResults" v-if="viewIndex == 1"><pre class="jsonPretty">{{psresults}}</pre></div>

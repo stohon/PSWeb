@@ -1,6 +1,6 @@
 
 add-type -Language CSharpVersion3 -TypeDefinition @"
-    public class OutputToWeb { public string Name { get; set; } public string Value { get; set; } }
+    public class OutputToWeb { public string Name { get; set; } public string Value { get; set; } public string OutString { get; set; } }
 "@
 
 function write-out ($objectResults, $objectName) {
@@ -11,6 +11,7 @@ function write-out ($objectResults, $objectName) {
         $results = New-Object OutputToWeb
         $results.Name = $objectName
         $results.Value = ConvertTo-Json -Depth 1 $objectResults
+        $results.OutString = $objectResults | Out-String
         return $results
     }
 }

@@ -57,10 +57,11 @@ var page = {
                     if (this.psscript.indexOf('write-in @"') > 0) {
                         this.psparams = this.psscript.substring(this.psscript.indexOf('write-in @"') + 11, 
                                                                 this.psscript.indexOf('"@'));
-                        fileText = this.psscript.replace('' + this.psparams + '',this.createParameterList());
+                        fileText = this.psscript.replace(this.psparams,"123INSERTPARAMSHERE123");
+                        fileText = this.escapeHtml(fileText);
+                        fileText = fileText.replace("123INSERTPARAMSHERE123",this.createParameterList());
                     }
                     
-                    //this.fileText = fileText;
                     document.getElementById("script").innerHTML = "<pre class=''><code>" + fileText + "</code></pre>";
                     
                     if (this._curFileName.indexOf(".ps1") > 0) {
@@ -109,6 +110,14 @@ var page = {
                 dragEnd(event) {
                     this.resultsOffset = this.resultsOffset + (this.lastMouseY - event.clientY);
                     this.bodyResize();
+                },
+                escapeHtml(unsafe) {
+                    return unsafe
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;");
                 }
             },
             created() { this.initForm(); }

@@ -46,11 +46,20 @@
                 </div>
                 <div v-for="(d, i) in psresults.DataObjects" class="dataRow">
                     <div style="padding-bottom:4px;"><span style='color:yellow;'>variable:</span> <b>{{d.Name}}</b></div>
-                    <pre class="psPretty">{{ d.OutString }}</pre>
+                    <pre class="psPretty">{{d.OutString}}</pre>
                 </div>
             </div>
-            <div id="jsonResults" v-if="viewIndex == 1"><pre class="jsonPretty">{{psresults}}</pre></div>
-            <div id="restResults" v-if="viewIndex == 2">
+            <div v-if="viewIndex == 1">
+                <div v-for="(e, i) in psresults.Errors" class="errorRow">
+                    {{e.Category}}<br/>{{e.Message}}
+                </div>
+                <div v-for="(d, i) in psresults.DataObjects" class="dataRow">
+                    <div style="padding-bottom:4px;"><span style='color:yellow;'>variable:</span> <b>{{d.Name}}</b></div>
+                    <pre class="psPretty" v-html="d.OutString"></pre>
+                </div>
+            </div>
+            <div id="jsonResults" v-if="viewIndex == 2"><pre class="jsonPretty">{{psresults}}</pre></div>
+            <div id="restResults" v-if="viewIndex == 3">
                 <br/><b>The previous script was run using the following api call:</b><br/><br/>
                 <a target="_blank" v-bind:href="RESTUrl" style="color:darkkhaki;">{{RESTUrl}}</a><br/><br/>
                 <b>The parameter payload is encoding in base64 using window.btoa() in javascript. The parameter json for this request is:</b><br/><br/>

@@ -14,7 +14,7 @@ var page = {
                 foldersFiles: function() { this.setDefaultFolderIndex(); } },
             computed: { 
                 _ok()            { return (this.foldersFiles == null) },
-                _views()         { return ["Standard", "JSON", "REST API Reference"]; },
+                _views()         { return ["Standard", "HTML", "JSON", "REST API Reference"]; },
                 _folders()       { return (this._ok) ? [] : this.foldersFiles; },
                 _psscripts ()    { return (this._ok) ? [] : this._folders[this.folderIndex].Scripts; },
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },

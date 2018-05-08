@@ -3,7 +3,7 @@
 
 write-in @"
 {
-    "serverList":["localhost", "L154TEC006072.ams.bnymellon.net"]
+    "serverList":["localhost"]
 }
 "@
 

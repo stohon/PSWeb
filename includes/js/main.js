@@ -10,7 +10,7 @@ var page = {
             watch: { 
                 psscript: function() { this.afterLoadScript(); }, 
                 folderIndex: function() { this.setDefaultFileIndex(); this.loadScript(); },
-                fileIndex: function()   { this.loadScript(); },
+                fileIndex: function()   { this.loadScript(); this.setDefaultView(); },
                 foldersFiles: function() { this.setDefaultFolderIndex(); } },
             computed: { 
                 _ok()            { return (this.foldersFiles == null) },
@@ -20,13 +20,18 @@ var page = {
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },
                 _curFileName()   { return (this._ok) ? "" : this._psscripts[this.fileIndex]; },
                 _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; },
-                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; }}
+                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; } }
             },
             methods: {
                 initForm() { 
                     this.bodyResize(); 
                     axios.get('./service.aspx?name=getFiles').then(r => this.foldersFiles = r.data); 
                     this.loadScript(); 
+                },
+                setDefaultView() {
+                    if (this._curFileName.indexOf(".html.") > 0) { this.viewIndex = 1 }
+                    if (this._curFileName.indexOf(".json.") > 0) { this.viewIndex = 2 }
+                    if (this._curFileName.indexOf(".rest.") > 0) { this.viewIndex = 3 }
                 },
                 setDefaultFolderIndex() {
                     for (ind = 0; ind < this.foldersFiles.length; ind++) {
@@ -47,15 +52,16 @@ var page = {
                     if (this._curFileName.indexOf(".ps1") > 0) this.isExecutable = true; else this.isExecutable = false;
                 },
                 afterLoadScript () {
-                    var scriptText = this.psscript;
+                    var fileText = this.psscript;
                     this.RESTUrl = "REST Url is created after Run Script is performed.";
                     if (this.psscript.indexOf('write-in @"') > 0) {
                         this.psparams = this.psscript.substring(this.psscript.indexOf('write-in @"') + 11, 
                                                                 this.psscript.indexOf('"@'));
-                        scriptText = this.psscript.replace('' + this.psparams + '',this.createParameterList());
+                        fileText = this.psscript.replace('' + this.psparams + '',this.createParameterList());
                     }
                     
-                    document.getElementById("script").innerHTML = "<pre class=''><code>" + scriptText + "</code></pre>";
+                    //this.fileText = fileText;
+                    document.getElementById("script").innerHTML = "<pre class=''><code>" + fileText + "</code></pre>";
                     
                     if (this._curFileName.indexOf(".ps1") > 0) {
                         hljs.initHighlighting.called = false; 

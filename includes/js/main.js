@@ -5,7 +5,8 @@ var page = {
             data: { 
                 psscript: "",        psparams: "",      isExecuting: false,     psresults: "", 
                 foldersFiles: null,  folderIndex: 0,    fileIndex: 0,           viewIndex: 0,
-                lastMouseY: 0,       resultsOffset: 50, preloadpsscript: "",    isExecutable: false },
+                lastMouseY: 0,       resultsOffset: 50, preloadpsscript: "",    isExecutable: false,
+                RESTUrl: "" },
             watch: { 
                 psscript: function() { this.afterLoadScript(); }, 
                 folderIndex: function() { this.setDefaultFileIndex(); this.loadScript(); },
@@ -13,12 +14,13 @@ var page = {
                 foldersFiles: function() { this.setDefaultFolderIndex(); } },
             computed: { 
                 _ok()            { return (this.foldersFiles == null) },
-                _views()         { return ["Standard", "JSON"]; },
+                _views()         { return ["Standard", "JSON", "REST API Reference"]; },
                 _folders()       { return (this._ok) ? [] : this.foldersFiles; },
                 _psscripts ()    { return (this._ok) ? [] : this._folders[this.folderIndex].Scripts; },
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },
                 _curFileName()   { return (this._ok) ? "" : this._psscripts[this.fileIndex]; },
-                _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; }
+                _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; },
+                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; } }
             },
             methods: {
                 initForm() { 
@@ -46,6 +48,7 @@ var page = {
                 },
                 afterLoadScript () {
                     var scriptText = this.psscript;
+                    this.RESTUrl = "REST Url is created after Run Script is performed.";
                     if (this.psscript.indexOf('write-in @"') > 0) {
                         this.psparams = this.psscript.substring(this.psscript.indexOf('write-in @"') + 11, 
                                                                 this.psscript.indexOf('"@'));
@@ -87,7 +90,9 @@ var page = {
                     jsonParams += "}";
 
                     this.isExecuting = true;
-                    axios.post('./service.aspx?name=runFile' + this._queryStr + "&jsonParams64=" + window.btoa(jsonParams))
+                    var serviceUrl = 'service.aspx?name=runFile' + this._queryStr + "&jsonParams64=" + window.btoa(jsonParams);
+                    this.RESTUrl = window.location.href.replace("console.aspx", "") + serviceUrl;
+                    axios.post('./' + serviceUrl)
                          .then(r => this.psresults = r.data)
                          .then(() => { page.vue.isExecuting = false; });
                 },

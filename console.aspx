@@ -39,7 +39,7 @@
                 <b id="btnExe" onclick="page.vue.executeScript()"><span class="innerRun"><span class="playButton">4</span>Run Script</span></b>
             </div>
         </div>
-        <div id="results">
+        <div id="results" v-bind:class="_resultsClass">
             <div id="standardResults" v-if="viewIndex == 0">
                 <div v-for="(e, i) in psresults.Errors" class="errorRow">
                     {{e.Category}}<br/>{{e.Message}}
@@ -50,6 +50,14 @@
                 </div>
             </div>
             <div id="jsonResults" v-if="viewIndex == 1">{{psresults}}</div>
+            <div id="restResults" v-if="viewIndex == 2">
+                <br/><b>The previous script was run using the following api call:</b><br/><br/>
+                <a target="_blank" v-bind:href="RESTUrl" style="color:darkkhaki;">{{RESTUrl}}</a><br/><br/>
+                <b>The parameter payload is encoding in base64 using window.btoa() in javascript. The parameter json for this request is:</b><br/><br/>
+                <span style="color:darkkhaki;">{{psparams}}</span><br/><br/>
+                <b>To create this request from your own page, encode the parameters query string variable like:</b><br/><br/>
+                <span style="color:darkkhaki">{rest url}?{query string}&jsonParams64 = window.btoa(jsonString);</span>
+            </div>
         </div>
     </div>
 </body>

@@ -40,7 +40,7 @@
             </div>
         </div>
         <div id="results" v-bind:class="_resultsClass">
-            <div id="standardResults" v-if="viewIndex == 0">
+            <div v-if="viewIndex == 0">
                 <div v-for="(e, i) in psresults.Errors" class="errorRow">
                     {{e.Category}}<br/>{{e.Message}}
                 </div>
@@ -49,7 +49,7 @@
                     {{ d.Data }}
                 </div>
             </div>
-            <div id="jsonResults" v-if="viewIndex == 1">{{psresults}}</div>
+            <div id="jsonResults" v-if="viewIndex == 1"><pre class="jsonPretty">{{psresults}}</pre></div>
             <div id="restResults" v-if="viewIndex == 2">
                 <br/><b>The previous script was run using the following api call:</b><br/><br/>
                 <a target="_blank" v-bind:href="RESTUrl" style="color:darkkhaki;">{{RESTUrl}}</a><br/><br/>

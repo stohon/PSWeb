@@ -20,7 +20,7 @@ var page = {
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },
                 _curFileName()   { return (this._ok) ? "" : this._psscripts[this.fileIndex]; },
                 _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; },
-                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; } }
+                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; }}
             },
             methods: {
                 initForm() { 
@@ -38,7 +38,7 @@ var page = {
                     var fileIndex = this.foldersFiles[this.folderIndex].Scripts.indexOf("Home.html");
                     this.fileIndex = (fileIndex < 0) ? 0 : fileIndex;
                 },
-                getWinHeight()          { return ((window.innerHeight - 105 ) / 2);    },
+                getWinHeight()          { return ((window.innerHeight - 116 ) / 2);    },
                 getElement(name)        { return document.getElementById(name); },
                 setHeight(name, offset) { this.getElement(name).style.height = (this.getWinHeight() + offset) + "px"; },
                 setWidth(name, offset)  { this.getElement(name).style.width  = (window.innerWidth + offset) + "px"; },

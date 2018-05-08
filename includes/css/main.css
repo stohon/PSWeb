@@ -17,6 +17,7 @@ pre { margin:0px;overflow:auto;width:100%;background-color: white;}
 #script { text-align:left; overflow:auto;width:98%;margin:0px;padding:1%;background-color:white; }
 .resultsBlue { background-color:darkblue;color:white;padding:10px;overflow:auto; font-family:verdana; font-size:12px; }
 .resultsWhite { background-color:#202020;color:#dddddd;padding:10px;overflow:auto; font-family:verdana; font-size:12px; }
+.jsonPretty { background-color:#202020;}
 .param { background-color:#ffffaa; padding:3px; border: 1px solid #dddd77; 
          padding-right:5px; padding-left:5px; }
 .paramLine { padding:4px;margin-left:15px; }

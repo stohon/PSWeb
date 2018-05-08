@@ -77,17 +77,17 @@ var page = {
                 },
                 executeScript() {
                     parameterSpans = document.getElementsByClassName("param");
-                    var postJSON = "{";
+                    var jsonParams = "{";
                     var paramDelimitor = "";
                     for (i = 0; i < parameterSpans.length; i++) {
-                        postJSON += paramDelimitor + '"' + parameterSpans[i].getAttribute("paramName") + '":' + 
+                        jsonParams += paramDelimitor + '"' + parameterSpans[i].getAttribute("paramName") + '":' + 
                                     parameterSpans[i].innerText;
                         paramDelimitor = ",";
                     }
-                    postJSON += "}";
+                    jsonParams += "}";
 
                     this.isExecuting = true;
-                    axios.post('./service.aspx?name=runFile' + this._queryStr + "&postJSON=" + postJSON)
+                    axios.post('./service.aspx?name=runFile' + this._queryStr + "&jsonParams64=" + window.btoa(jsonParams))
                          .then(r => this.psresults = r.data)
                          .then(() => { page.vue.isExecuting = false; });
                 },

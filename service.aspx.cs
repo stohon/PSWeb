@@ -13,17 +13,19 @@ using Newtonsoft.Json.Linq;
 namespace PowerShellWebConsole
 {
     // RESPONSE TYPES
-    public class OutError                { public string Category; public string Message; }
-    public class OutDataObject           { public string Name; public dynamic Data; }
-	public class OutDataProperties       { public string Name; public string Value; public string ValueType; }
-	public class OutResponse             { public List<OutError> Errors = new List<OutError>(); public List<OutDataObject> DataObjects = new List<OutDataObject>(); }
-    public class File_OutResponse        { public string Source; }
+    public class OutError           { public string Category; public string Message; }
+    public class OutDataObject      { public string Name; public dynamic Data; }
+	public class OutDataProperties  { public string Name; public string Value; public string ValueType; }
+	public class OutResponse        { public List<OutError> Errors = new List<OutError>(); public List<OutDataObject> DataObjects = new List<OutDataObject>(); }
+    public class File_OutResponse   { public string Source; }
     public class Folder_OutResponse { public string Name; public List<string> Scripts = new List<string>(); }
+    public class Save_OutResponse   { public string FolderName; public string FileName; public string Parameters; public string Results; }
 
     public partial class Service_aspx : System.Web.UI.Page
     {
         // Gets the root path of where the scripts are located
         public string PowerShellRootFolder { get { return Server.MapPath("~") + @"\powershell\"; }}
+        public string LogFolder { get { return Server.MapPath("~") + @"\logs\"; }}
 
         protected void Page_Load(object sender, EventArgs e) {
             string serviceName = Request.QueryString["name"];
@@ -47,22 +49,31 @@ namespace PowerShellWebConsole
         public void RunFile() {
             string psParams = @"param($postData,$outputFormat);";
             OutResponse outResp = new OutResponse();
+            Save_OutResponse saveResult = new Save_OutResponse();
 
-            if (!DoIHaveRights()) { 
-                outResp.Errors.Add(new OutError() { Category="Access Denied", Message="You do not have rights to run this script." }); 
-            }
-            else {
-                using (PowerShell PowerShellInstance = PowerShell.Create())
-                {
-                    string categoryFolder = Request.QueryString["category"];
-                    string scriptName = Request.QueryString["script"];
-                    
-                    PowerShellInstance.AddScript(psParams + File.ReadAllText(Server.MapPath("~") + @"\powershell\" + categoryFolder + @"\" + scriptName));
-                    PowerShellInstance.AddParameter("outputFormat", "json");
-                    PowerShellInstance.AddParameter("postData", Request.QueryString["postJSON"].ToString());
-
-                    try 
+            try 
+            {
+                if (!DoIHaveRights()) { 
+                    outResp.Errors.Add(new OutError() { Category="Access Denied", Message="You do not have rights to run this script." }); 
+                }
+                else {
+                    using (PowerShell PowerShellInstance = PowerShell.Create())
                     {
+                        string folderName = Request.QueryString["category"];
+                        string fileName = Request.QueryString["script"];
+
+                        saveResult.FolderName = folderName;
+                        saveResult.FileName = fileName;
+                        
+                        PowerShellInstance.AddScript(psParams + File.ReadAllText(this.PowerShellRootFolder + folderName + @"\" + fileName));
+                        PowerShellInstance.AddParameter("outputFormat", "json");
+                        string jsonParams64 = Request.QueryString["jsonParams64"].ToString();
+                        byte[] arrParams = System.Convert.FromBase64String(jsonParams64);
+                        string jsonParams = System.Text.Encoding.UTF8.GetString(arrParams);
+                        PowerShellInstance.AddParameter("postData", jsonParams);
+
+                        saveResult.Parameters = jsonParams;
+
                         Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
 
                         if (PowerShellInstance.Streams.Error.Count > 0)
@@ -84,15 +95,21 @@ namespace PowerShellWebConsole
                                 });
                             }
                         }
-                    }
-                    catch (System.Exception exp) 
-                    {
-                        outResp.Errors.Add(new OutError() { Category = exp.Source, Message = exp.Message } );
-                    }
-                }  
-            } 
-            
-            Response.Write(JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None));
+                    }  
+                } 
+                
+                // SAVE RESP OBJECT
+                saveResult.Results = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
+                StreamWriter sw = File.CreateText(this.LogFolder + "out.json");
+                sw.Write(JsonConvert.SerializeObject(saveResult,Newtonsoft.Json.Formatting.None));
+            }
+            catch (System.Exception exp) 
+            {
+                outResp.Errors.Add(new OutError() { Category = exp.Source, Message = exp.Message } );
+            }
+
+            string responseJSON = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
+            Response.Write(responseJSON);
         }
 
         public void GetFile() {
@@ -103,10 +120,10 @@ namespace PowerShellWebConsole
             } 
             else { 
                 try {
-                    string categoryFolder = Request.QueryString["category"];
-                    string scriptName = Request.QueryString["script"];
+                    string folderName = Request.QueryString["category"];
+                    string fileName = Request.QueryString["script"];
 
-                    resp.Source = File.ReadAllText(this.PowerShellRootFolder + categoryFolder + @"\" + scriptName);
+                    resp.Source = File.ReadAllText(this.PowerShellRootFolder + folderName + @"\" + fileName);
                 } 
                 catch (System.Exception exp) {
                     resp.Source = "Error: could not load script on server. " + exp.Message;

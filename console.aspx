@@ -42,10 +42,10 @@
         <div id="results">
             <div id="standardResults" v-if="viewIndex == 0">
                 <div v-for="(e, i) in psresults.Errors" class="errorRow">
-                    {{e.Category}}</br>{{e.Message}}
+                    {{e.Category}}<br/>{{e.Message}}
                 </div>
                 <div v-for="(d, i) in psresults.DataObjects" class="dataRow">
-                    <span style='color:yellow;'>var: </span>{{d.Name}}</br>
+                    <span style='color:yellow;'>var: </span>{{d.Name}}<br/>
                     {{ d.Data }}
                 </div>
             </div>

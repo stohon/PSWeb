@@ -8,4 +8,4 @@ write-in @"
 
 $results = Invoke-WebRequest -Uri $url -UseBasicParsing
 
-write-out-all $results "WebRequest1"
+write-out $results "WebRequest1"

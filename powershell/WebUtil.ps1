@@ -16,16 +16,38 @@ function write-out ($objectResults, $objectName) {
     }
 }
 
+function write-out-json ($objectResults, $objectName) {
+    if ($outputFormat -eq $null) {
+        return $objectResults
+    } 
+    if ($outputFormat -eq "json") {
+        $results = New-Object OutputToWeb
+        $results.Name = $objectName
+        $results.Value = convertToJson $objectResults
+        $results.OutString = ""
+        return $results
+    }
+}
+
+function write-out-outstring ($objectResults, $objectName) {
+    if ($outputFormat -eq $null) {
+        return $objectResults
+    } 
+    if ($outputFormat -eq "json") {
+        $results = New-Object OutputToWeb
+        $results.Name = $objectName
+        $results.Value = "{}"
+        $results.OutString = $objectResults | Out-String
+        return $results
+    }
+}
+
 function convertToJson ($objIn) {
     try {
         ConvertTo-Json -Depth 1 $objIn
     } catch {
         return "{ 'Error': 'Could not parse object to JSON. Try using | Select-Object and specify propery names to return. ConvertTo-Json fails often when trying to parse every property within an object.' }"
     }
-}
-
-function write-out-all ($objectResults, $objectName) {
-    write-out ($objectResults | Select-Object *) $objectName
 }
 
 function write-in ($jsonParams) {

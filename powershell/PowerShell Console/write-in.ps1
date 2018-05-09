@@ -20,3 +20,8 @@ write-out $numberIn "numberIn1"
 write-out $stringIn "stringIn1"
 write-out $narrayIn "narrayIn1"
 write-out $sarrayIn "sarrayIn1"
+
+write-out-json $numberIn "numberIn2 json only"
+write-out-outstring $stringIn "stringIn2 outstring only"
+write-out-json $narrayIn "narrayIn2 json only"
+write-out-outstring $sarrayIn "sarrayIn2 outstring only"

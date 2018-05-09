@@ -20,8 +20,7 @@ var page = {
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },
                 _curFileName()   { return (this._ok) ? "" : this._psscripts[this.fileIndex]; },
                 _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; },
-                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; } }
-            },
+                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; }} },
             methods: {
                 initForm() { 
                     this.bodyResize(); 

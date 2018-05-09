@@ -1,4 +1,4 @@
-. "C:\inetpub\wwwroot\PS\powershell\WebUtil.ps1"
+. "$env:PSConsole\powershell\WebUtil.ps1"
 
 write-in @"
 {
@@ -7,7 +7,7 @@ write-in @"
 "@
 
 $outString = ""
-Get-ChildItem -Path "C:\inetpub\wwwroot\PS\logs" |
+Get-ChildItem -Path "$env:PSConsole\logs" |
     ? { $_.LastWriteTime -gt (Get-Date).AddDays(-$numDaysOld) } |
     sort LastWriteTime -Descending |
     % {

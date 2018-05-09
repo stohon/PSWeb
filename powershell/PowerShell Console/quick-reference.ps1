@@ -1,5 +1,5 @@
-. "D:\inetpub\wwwroot\PS\powershell\WebUtil.ps1"
+. "$env:PSConsole\powershell\WebUtil.ps1"
 
 write-out "test"
 
-write-out ([Environment]::GetEnvironmentVariable('PSWebConsole')).ToString()
+write-out ([Environment]::GetEnvironmentVariable('PSConsole')).ToString()

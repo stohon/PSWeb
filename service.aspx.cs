@@ -25,10 +25,19 @@ namespace PowerShellWebConsole
     public partial class Service_aspx : System.Web.UI.Page
     {
         // Gets the root path of where the scripts are located
-        public string PowerShellRootFolder { get { return Server.MapPath("~") + @"\powershell\"; }}
+        public string PowerShellConsoleRootFolder { get { return Server.MapPath("~"); } }
+        public string PowerShellRootFolder { get { return PowerShellConsoleRootFolder + @"\powershell\"; }}
         public string AllowUsernameList { get { return ConfigurationManager.AppSettings["AllowUsernameList"]; } }
-        public string LogFolder { get { return ConfigurationManager.AppSettings["LogPath"] + @"\"; }}
+        public string LogFolder { 
+            get { 
+                    if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["LogPath"])) {
+                        return PowerShellConsoleRootFolder + @"\Logs\";
+                    }
+                    return ConfigurationManager.AppSettings["LogPath"] + @"\"; 
+                }
+        }
         public string Username { get { return User.Identity.Name; } }
+        public string ReplaceAppRootEnvVarInPSScriptWithActual { get { return ConfigurationManager.AppSettings["ReplaceAppRootEnvVarInPSScriptWithActual"]; } }
 
         protected void Page_Load(object sender, EventArgs e) {
             string serviceName = Request.QueryString["name"];
@@ -76,7 +85,11 @@ namespace PowerShellWebConsole
                         saveResult.FolderName = folderName;
                         saveResult.FileName = fileName;
                         
-                        PowerShellInstance.AddScript(psParams + File.ReadAllText(this.PowerShellRootFolder + folderName + @"\" + fileName));
+                        string fileText = File.ReadAllText(this.PowerShellRootFolder + folderName + @"\" + fileName);
+                        if (!String.IsNullOrEmpty(ReplaceAppRootEnvVarInPSScriptWithActual)) {
+                            fileText = fileText.Replace(ReplaceAppRootEnvVarInPSScriptWithActual, PowerShellConsoleRootFolder);
+                        }
+                        PowerShellInstance.AddScript(psParams + fileText);
                         PowerShellInstance.AddParameter("outputFormat", "json");
                         string jsonParams64 = Request.QueryString["jsonParams64"].ToString();
                         byte[] arrParams = System.Convert.FromBase64String(jsonParams64);
@@ -114,7 +127,7 @@ namespace PowerShellWebConsole
                 saveResult.Results = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
                 using (StreamWriter sw = File.CreateText(this.LogFolder + saveResult.FolderName.Replace(" ", "_") + " - " + 
                                                                           saveResult.FileName.Replace(" ", "_") + " - " + 
-                                                                          DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".txt")) {
+                                                                          DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".log")) {
                     sw.WriteLine(JsonConvert.SerializeObject(saveResult,Newtonsoft.Json.Formatting.None));
                 }
             }

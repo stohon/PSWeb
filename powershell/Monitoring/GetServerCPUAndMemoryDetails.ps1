@@ -1,5 +1,5 @@
-﻿. "C:\inetpub\wwwroot\PS\powershell\WebUtil.ps1"
-. "C:\inetpub\wwwroot\PS\powershell\Monitoring\Common\MachineTypes.ps1"
+﻿. "$env:PSConsole\powershell\WebUtil.ps1"
+. "$env:PSConsole\powershell\Monitoring\Common\MachineTypes.ps1"
 
 write-in @"
 {

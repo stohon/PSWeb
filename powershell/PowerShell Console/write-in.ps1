@@ -1,4 +1,4 @@
-. "C:\inetpub\wwwroot\PS\powershell\WebUtil.ps1"
+. "$env:PSConsole\powershell\WebUtil.ps1"
 
 # PARAMETERS CAN BE DEFINED AS NUMBERS, STRINGS OR AN ARRAY OF NUMBER AND STRINGS
 write-in @"

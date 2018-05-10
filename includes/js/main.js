@@ -48,6 +48,7 @@ var page = {
                 setHeight(name, offset) { this.getElement(name).style.height = (this.getWinHeight() + offset) + "px"; },
                 setWidth(name, offset)  { this.getElement(name).style.width  = (window.innerWidth + offset) + "px"; },
                 loadScript() {
+                    this.psresults = "";
                     axios.get('./service.aspx?name=getFile' + this._queryStr).then(r => this.psscript = r.data.Source );
                     if (this._curFileName.indexOf(".ps1") > 0) this.isExecutable = true; else this.isExecutable = false;
                 },
@@ -75,7 +76,7 @@ var page = {
                         var paramStr = '\r{';
                         for (prop in paramObj) {
                             var val = JSON.stringify(paramObj[prop]);
-                            paramStr += "<div class='paramLine'>$" + prop + ": " + 
+                            paramStr += "<div class='paramLine'>" + prop + ": " + 
                                         "<span class='param' contentEditable='true' paramName='" + prop + "'>" + val + 
                                         "</span></div>";
                         }

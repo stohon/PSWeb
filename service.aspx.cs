@@ -120,7 +120,7 @@ namespace PowerShellWebConsole
                 saveResult.Results = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
                 using (StreamWriter sw = File.CreateText(this.LogFolder + saveResult.FolderName.Replace(" ", "_") + " - " + 
                                                                           saveResult.FileName.Replace(" ", "_") + " - " + 
-                                                                          DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".log")) {
+                                                                          DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".txt")) {
                     sw.WriteLine(JsonConvert.SerializeObject(saveResult,Newtonsoft.Json.Formatting.None));
                 }
             }

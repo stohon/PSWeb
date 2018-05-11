@@ -24,20 +24,15 @@ namespace PowerShellWebConsole
 
     public partial class Service_aspx : System.Web.UI.Page
     {
-        // Gets the root path of where the scripts are located
-        public string PowerShellConsoleRootFolder { get { return Server.MapPath("~"); } }
-        public string PowerShellRootFolder { get { return PowerShellConsoleRootFolder + @"\powershell\"; }}
         public string AllowUsernameList { get { return ConfigurationManager.AppSettings["AllowUsernameList"]; } }
-        public string LogFolder { 
-            get { 
-                    if (String.IsNullOrEmpty(ConfigurationManager.AppSettings["LogPath"])) {
-                        return PowerShellConsoleRootFolder + @"\Logs\";
-                    }
-                    return ConfigurationManager.AppSettings["LogPath"] + @"\"; 
-                }
-        }
+
+        public string PSConsoleShareName { get { return ConfigurationManager.AppSettings["PSConsoleShareName"]; } }
+        public string PSConsoleShareLocation { get { return ConfigurationManager.AppSettings["PSConsoleShareLocation"]; } }
+        public string PowerShellRootFolder { get { return PSConsoleShareLocation + @"\powershell\"; }}
+        public string LogFolder { get { return PSConsoleShareLocation + @"\logs\"; } }
+        public string PowerShellConsoleAppFolder { get { return Server.MapPath("~"); } }
         public string Username { get { return User.Identity.Name; } }
-        public string ReplaceAppRootEnvVarInPSScriptWithActual { get { return ConfigurationManager.AppSettings["ReplaceAppRootEnvVarInPSScriptWithActual"]; } }
+        public string PSConsoleEnvVarReferenceToReplace { get { return "$env:" + PSConsoleShareName; } }
 
         protected void Page_Load(object sender, EventArgs e) {
             string serviceName = Request.QueryString["name"];
@@ -86,9 +81,7 @@ namespace PowerShellWebConsole
                         saveResult.FileName = fileName;
                         
                         string fileText = File.ReadAllText(this.PowerShellRootFolder + folderName + @"\" + fileName);
-                        if (!String.IsNullOrEmpty(ReplaceAppRootEnvVarInPSScriptWithActual)) {
-                            fileText = fileText.Replace(ReplaceAppRootEnvVarInPSScriptWithActual, PowerShellConsoleRootFolder);
-                        }
+                        fileText = fileText.Replace(PSConsoleEnvVarReferenceToReplace, PSConsoleShareLocation);
                         PowerShellInstance.AddScript(psParams + fileText);
                         PowerShellInstance.AddParameter("outputFormat", "json");
                         string jsonParams64 = Request.QueryString["jsonParams64"].ToString();

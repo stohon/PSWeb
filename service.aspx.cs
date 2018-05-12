@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PowerShellWebConsole
+namespace PSWeb
 {
     // RESPONSE TYPES
     public class OutError           { public string Category; public string Message; }

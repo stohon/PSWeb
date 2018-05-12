@@ -33,6 +33,7 @@ namespace PSWeb
         public string PowerShellConsoleAppFolder { get { return Server.MapPath("~"); } }
         public string Username { get { return User.Identity.Name; } }
         public string PSConsoleEnvVarReferenceToReplace { get { return "$env:" + PSConsoleShareName; } }
+        public string LoggingEnabled { get { return ConfigurationManager.AppSettings["LoggingEnabled"]; } }
 
         protected void Page_Load(object sender, EventArgs e) {
             string serviceName = Request.QueryString["name"];
@@ -116,12 +117,13 @@ namespace PSWeb
                     }  
                 } 
                 
-                // SAVE RESP OBJECT
-                saveResult.Results = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
-                using (StreamWriter sw = File.CreateText(this.LogFolder + saveResult.FolderName.Replace(" ", "_") + " - " + 
-                                                                          saveResult.FileName.Replace(" ", "_") + " - " + 
-                                                                          DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".txt")) {
-                    sw.WriteLine(JsonConvert.SerializeObject(saveResult,Newtonsoft.Json.Formatting.None));
+                if (LoggingEnabled == "true") {
+                    saveResult.Results = JsonConvert.SerializeObject(outResp,Newtonsoft.Json.Formatting.None);
+                    using (StreamWriter sw = File.CreateText(this.LogFolder + saveResult.FolderName.Replace(" ", "_") + " - " + 
+                                                                            saveResult.FileName.Replace(" ", "_") + " - " + 
+                                                                            DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss.ff") + ".txt")) {
+                        sw.WriteLine(JsonConvert.SerializeObject(saveResult,Newtonsoft.Json.Formatting.None));
+                    }
                 }
             }
             catch (System.Exception exp) 

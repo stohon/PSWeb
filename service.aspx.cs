@@ -13,7 +13,6 @@ using Newtonsoft.Json.Linq;
 
 namespace PSWeb
 {
-    // RESPONSE TYPES
     public class OutError           { public string Category; public string Message; }
     public class OutDataObject      { public string Name; public dynamic Data; public string OutString; }
 	public class OutDataProperties  { public string Name; public string Value; public string ValueType; }

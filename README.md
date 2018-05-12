@@ -5,14 +5,17 @@ Run PowerShell scripts in a web browser. View the full script to be run, modify 
 View the results in the web console or via RESTful api and JSON.
 
 Quick Setup: 
-1. Ensure IIS is setup with windows authenitcation. 
-2. Create an application under your root website port 80 called PS. 
-3. Copy all files into the PS directory.
-4. Create an environment variable called PSConsole, from command line: setx PSConsole "--path of PS directory--". Environment variable PSConsole will be used in PowerShell scripts to reference include files. If running a script locally PowerShell will interpret the variable correctly. However, running the script through the web app the variable is not interpreted correctly in PowerShell. Instead the web application replaces all occurrences of the variable with the working path of the web app before executing. The web.config file contains a reference to the environment variable name should you have a need to change it. 
-5. Set the log path in web.config or create a \logs directory under PS folder (default location is \logs under app directory if web.config has no path set). Depending on your environment you may have to change the application pool identity to have the neccessary rights to write logs to your local drive.
-6. Disable Anonymous Authentication and enable Windows Authentication on PS application. Application will work without Windows authentication, but will be open to all. 
-7. Update UsernameList in web.config. If blank then application will ignore this setting and rely on security settings in IIS for access.  
-8. View at http://localhost/PS
+1. Ensure IIS is setup with windows authenitcation. This is not required, but strongly encouraged.  
+2. Create an application within IIS. 
+3. Copy all files into the root directory of the new IIS application.
+4. Disable Anonymous Authentication and enable Windows Authentication on IIS application. Application will work without Windows authentication but will be open to all. 
+5. Update UsernameList in web.config. If left blank the application will ignore this setting and rely on security settings in IIS for access. This setting is a comma delimited list of domain/username. Do not leave blank spaces.  
+6. Create a new directory (PSWebShare) to store all the common files, logs, powershell scripts and additional configuration files. See the repo PSWebShare. Download the PSWebShare repo to this directory.
+7. Once the directory is created and files downloaded, update the variable "PSConsoleShareLocation" in the web.config file with the directory path. This path can be a local path, c:\path or a share location \\machine\path. You can run PSWeb on mulitple servers and have all web servers point to the same location using a share location.
+8. Create an environment variable to the new share path. This step is optional. Creating an environment variable allows you to write PowerShell includes within your scripts without hard coding the path to ps1 files. Command line: setx PSConsole "\\mysharelocation". 
+9. Update web.config file variable: "PSConsoleShareName" with the name of the environment variable name if one is created. Running a PowerShell script from a command line or ISE the environment variable is interpreted correctly. However, running a script from this web application, environment variables are not interpreted correctly, the reference is instead replaced before execution with the actual path location set in the web.config. The application looks for $env:<EnvironmentVariable> within all scripts and replaces them with actual paths. 
+10. Set LoggingEnabled to true or false. The log location is yourshare\logs.
+11. Optional: you can create a virtual directory under the web application that points to the share location. This will allow you to reference log files or other output files from the application output window results.  
 
 Visit my blog at http://www.stohon.com
 

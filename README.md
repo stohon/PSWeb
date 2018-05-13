@@ -1,8 +1,8 @@
 # PowerShellWebConsole
 
-Run PowerShell scripts in a web browser. View the full script to be run, modify parameter values only. Run locally on the server or in a browser without making any modifications to the script. 
+Run PowerShell scripts in a web browser. View the full script to run, modify parameter values only. Run locally on the server or in a browser without making any modifications to the script. View results in many different formats. 
 
-View the results in the web console or via RESTful api and JSON.
+See my blog at: http://stohon.com/2018/05/13/psweb-powershell-web-console/
 
 Quick Setup: 
 1. Ensure IIS is setup with windows authenitcation. This is not required, but strongly encouraged.  
@@ -16,7 +16,5 @@ Quick Setup:
 9. Update web.config file variable: "PSConsoleShareName" with the name of the environment variable name if one is created. Running a PowerShell script from a command line or ISE the environment variable is interpreted correctly. However, running a script from this web application, environment variables are not interpreted correctly, the reference is instead replaced before execution with the actual path location set in the web.config. The application looks for $env:<EnvironmentVariable> within all scripts and replaces them with actual paths. 
 10. Set LoggingEnabled to true or false. The log location is yourshare\logs.
 11. Optional: you can create a virtual directory under the web application that points to the share location. This will allow you to reference log files or other output files from the application output window results.  
-
-Visit my blog at http://www.stohon.com
 
 Enjoy.

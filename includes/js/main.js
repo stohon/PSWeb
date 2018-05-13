@@ -3,9 +3,8 @@ var page = {
         this.vue = new Vue({
             el: '#app',
             data: { 
-                psscript: "",        psparams: "",      isExecuting: false,     psresults: "", 
-                foldersFiles: null,  folderIndex: 0,    fileIndex: 0,           viewIndex: 0,
-                lastMouseY: 0,       resultsOffset: 50, preloadpsscript: "",    isExecutable: false,
+                psscript: "",   psparams: "",   isExecuting: false,  psresults: "",     foldersFiles: null,     folderIndex: 0,    
+                fileIndex: 0,   viewIndex: 0,   lastMouseY: 0,       resultsOffset: 50, preloadpsscript: "",    isExecutable: false,
                 RESTUrl: "" },
             watch: { 
                 psscript: function() { this.afterLoadScript(); }, 
@@ -19,8 +18,7 @@ var page = {
                 _psscripts ()    { return (this._ok) ? [] : this._folders[this.folderIndex].Scripts; },
                 _curFolderName() { return (this._ok) ? "" : this._folders[this.folderIndex].Name; },
                 _curFileName()   { return (this._ok) ? "" : this._psscripts[this.fileIndex]; },
-                _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; },
-                _resultsClass()  { switch (this.viewIndex) { case 1: return "resultsWhite"; break; case 2: return "resultsWhite"; break; default: return "resultsBlue"; }} },
+                _queryStr  ()    { return '&category=' + this._curFolderName + '&script=' + this._curFileName; } },
             methods: {
                 initForm() { 
                     this.bodyResize(); 
@@ -43,7 +41,7 @@ var page = {
                     var fileIndex = this.foldersFiles[this.folderIndex].Scripts.indexOf("Home.html");
                     this.fileIndex = (fileIndex < 0) ? 0 : fileIndex;
                 },
-                getWinHeight()          { return ((window.innerHeight - 116 ) / 2);    },
+                getWinHeight()          { return ((window.innerHeight - 116 ) / 2); },
                 getElement(name)        { return document.getElementById(name); },
                 setHeight(name, offset) { this.getElement(name).style.height = (this.getWinHeight() + offset) + "px"; },
                 setWidth(name, offset)  { this.getElement(name).style.width  = (window.innerWidth + offset) + "px"; },
@@ -113,12 +111,7 @@ var page = {
                     this.bodyResize();
                 },
                 escapeHtml(unsafe) {
-                    return unsafe
-                        .replace(/&/g, "&amp;")
-                        .replace(/</g, "&lt;")
-                        .replace(/>/g, "&gt;")
-                        .replace(/"/g, "&quot;")
-                        .replace(/'/g, "&#039;");
+                    return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
                 }
             },
             created() { this.initForm(); }

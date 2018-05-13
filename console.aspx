@@ -39,7 +39,7 @@
                 <b id="btnExe" onclick="page.vue.executeScript()"><span class="innerRun"><span class="playButton">4</span>Run Script</span></b>
             </div>
         </div>
-        <div id="results" v-bind:class="_resultsClass">
+        <div id="results">
             <div v-if="viewIndex == 0">
                 <div v-for="(e, i) in psresults.Errors" class="errorRow">
                     {{e.Category}}<br/>{{e.Message}}
